@@ -24,7 +24,7 @@ A PowerShell utility for comparing two Excel worksheets, grouping identical diff
 Run the script:
 
 ```powershell
-.\ExcelCompare.ps1
+.\script.ps1
 ```
 
 ### Step 1: Select Files
