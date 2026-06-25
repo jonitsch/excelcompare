@@ -5,7 +5,7 @@ function handleInput([string]$message) {
     $in = Read-Host $message
 
     if ([string]::IsNullOrWhiteSpace($in)) {
-        Write-Host "Canceled."
+        Write-Host "Canceled.`n"
         $global:stage = "menu"
         continue
     }
@@ -107,13 +107,12 @@ while ($running) {
         Write-Host "Comparing $rows rows and $cols columns...`n"
 
         $diff_map = @{}
+        $sha1 = [System.Security.Cryptography.SHA1]::Create()
 
         for ($c = 1; $c -le $cols; $c++) {
             for ($r = 1; $r -le $rows; $r++) {
                 $value1 = $ws1.Cells.Item($r, $c).Value2
                 $value2 = $ws2.Cells.Item($r, $c).Value2
-
-                $sha1 = [System.Security.Cryptography.SHA1]::Create()
 
                 if ($value1 -ne $value2) {
                     $key = "$c-$value1-$value2"
