@@ -16,7 +16,7 @@ $handleError = {
     param([boolean]$con, [string]$message)
 
     if ($con) {
-        Write-Host $message
+        Write-Host $message `n
         continue
     }
 }
@@ -143,10 +143,15 @@ while ($running) {
     }
 
     if ($stage -eq "overview") {
+
         if ($diff_map.Count -eq 0) {
+            Write-Output @()
+
             Write-Host "No differences found!`n"
         }
         else {
+            Write-Output $diff_map
+
             $diff_map.Values |
             Sort-Object Count -Descending |
             Select-Object ID, Count, Column, File1_Value, File2_Value, Rows |
@@ -190,13 +195,14 @@ while ($running) {
             Write-Host "2   Accept File2 Value '$($diff.File2_Value)'`n"
 
             $in = handleInput "Enter an option (press Enter to cancel)"
+            & $handleError (!($in -eq "1" -or $in -eq "2")) "Invalid input, merging canceled!"
 
             if ($in -eq "1") {
                 $targetWs = $ws2
                 $targetWb = $wb2
                 $val = $diff.File1_Value
             }
-            else {
+            elseif ($in -eq "2") {
                 $targetWs = $ws1
                 $targetWb = $wb1
                 $val = $diff.File2_Value
@@ -213,6 +219,7 @@ while ($running) {
             Write-Host "Changes saved! Reevaluating differences..."
             $stage = "evaluation"
         }
+        $id = $null
     }
 
     if ($stage -eq "cleanup") {
