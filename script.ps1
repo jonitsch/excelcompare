@@ -109,10 +109,13 @@ while ($running) {
         $diff_map = @{}
         $sha1 = [System.Security.Cryptography.SHA1]::Create()
 
+        $data1 = $ws1.UsedRange.Value2
+        $data2 = $ws2.UsedRange.Value2
+
         for ($c = 1; $c -le $cols; $c++) {
             for ($r = 1; $r -le $rows; $r++) {
-                $value1 = $ws1.Cells.Item($r, $c).Value2
-                $value2 = $ws2.Cells.Item($r, $c).Value2
+                $value1 = $data1[$r, $c]
+                $value2 = $data2[$r, $c]
 
                 if ($value1 -ne $value2) {
                     $key = "$c-$value1-$value2"
@@ -168,10 +171,13 @@ while ($running) {
         $diff = $diff_map[$id]
         $c = $diff_map[$id].ColNumber
 
+        $data1 = $ws1.UsedRange.Value2
+        $data2 = $ws2.UsedRange.Value2
+
         if ($stage -eq "list") {
             $list = foreach ($r in $diff.Rows) {
-                $value1 = $ws1.Cells.Item($r, $c).Value2
-                $value2 = $ws2.Cells.Item($r, $c).Value2
+                $value1 = $data1[$r, $c]
+                $value2 = $data2[$r, $c]
 
                 [PSCustomObject]@{
                     Row         = $r
