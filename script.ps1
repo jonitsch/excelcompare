@@ -148,12 +148,12 @@ while ($running) {
     if ($stage -eq "overview") {
 
         if ($diff_map.Count -eq 0) {
-            Write-Output @()
+            $output = Write-Output @()
 
             Write-Host "No differences found!`n"
         }
         else {
-            Write-Output $diff_map
+            $output = Write-Output $diff_map
 
             $diff_map.Values |
             Sort-Object Count -Descending |
